@@ -1,0 +1,108 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport-fit=cover를 추가하여 아이폰 노치(다이내믹 아일랜드) 영역까지 확장 사용 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>단어 정복기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 헤더 영역 -->
+    <header>
+      <h1>🏷️ VOCA MASTER</h1>
+      <nav class="tabs">
+        <button id="tab-study-btn" class="tab-btn active" onclick="switchTab('study')">01. 단어외우기</button>
+        <button id="tab-test-btn" class="tab-btn" onclick="switchTab('test')">02. 단어시험</button>
+      </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main>
+      <!-- 01. 단어외우기 탭 -->
+      <section id="study-tab" class="tab-content active">
+        <div class="card study-card">
+          <!-- 별표 오답 횟수 표시 배지 -->
+          <div class="star-badge" id="study-star">
+            <span class="star-icon">⭐</span>
+            <span class="star-count" id="study-star-count">0</span>
+          </div>
+          
+          <div class="card-body">
+            <h2 id="study-word">Word</h2>
+            <div class="divider"></div>
+            <p id="study-meaning">Definition</p>
+          </div>
+          
+          <div class="card-footer">
+            <span id="study-progress">0 / 0</span>
+          </div>
+        </div>
+        
+        <!-- 하단 컨트롤러 -->
+        <div class="nav-buttons">
+          <button id="prev-btn" class="nav-btn btn-secondary" onclick="prevWord()">이전 단어</button>
+          <button id="next-btn" class="nav-btn btn-primary" onclick="nextWord()">다음 단어</button>
+        </div>
+      </section>
+
+      <!-- 02. 단어시험 탭 -->
+      <section id="test-tab" class="tab-content">
+        <!-- [서브뷰 1] 시험 대기/진입 화면 -->
+        <div id="test-intro" class="test-sub-view active">
+          <div class="intro-box">
+            <div class="intro-icon">📝</div>
+            <h3>오늘의 단어 시험 (20개)</h3>
+            <p class="test-desc">
+              랜덤으로 선정된 오늘의 20문항입니다.<br>
+              하루 동안 동일한 시험지가 유지되며, 날짜가 바뀌면 새로운 세트로 자동 변경됩니다.
+            </p>
+            <button class="action-btn" onclick="startTest()">시험 시작하기</button>
+          </div>
+        </div>
+
+        <!-- [서브뷰 2] 시험 진행 중 (플래시 카드) -->
+        <div id="test-play" class="test-sub-view">
+          <div class="card test-card" onclick="toggleTestCard()">
+            <div class="test-progress-header">
+              <span id="test-card-index">1 / 20</span>
+            </div>
+            <div class="card-body">
+              <h2 id="test-card-text">Word</h2>
+              <!-- 👇 이 구분선과 뜻 태그를 새로 추가해 줍니다 (평소엔 숨김 상태) -->
+              <div id="test-divider" class="divider" style="display: none;"></div>
+              <p id="test-card-meaning" class="test-meaning" style="display: none;">뜻</p>
+              <div class="click-indicator">
+                <span id="test-card-tip">클릭하면 뜻이 표시됩니다.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- [서브뷰 3] 시험 종료 후 오답 체크 리스트 -->
+        <div id="test-result" class="test-sub-view">
+          <div class="result-header">
+            <h3>틀린 단어 체크하기</h3>
+            <p class="result-desc">
+              틀린 단어를 터치하여 빨갛게 활성화하세요.<br>실수로 눌렀다면 다시 터치하여 취소할 수 있습니다.
+            </p>
+          </div>
+
+          <!-- 스크롤 가능한 그리드 목록 -->
+          <div class="word-grid" id="test-result-grid">
+            <!-- 자바스크립트로 동적 로드 -->
+          </div>
+
+          <button class="action-btn btn-accent" onclick="saveTestResults()">결과 저장 및 학습 완료</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 스크립트 연결 -->
+  <script src="words.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
